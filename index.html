@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://unpkg.com/konva@8.0.4/konva.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
+        integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- 3-rd party library for gesture events -->
+    <script src="hammer-konva.js"></script>
+    <script src="jquery.hammer.js"></script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Vancerts Stage Designer</title>
+    <!-- <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+        #stage-parent {
+            width: 100%;
+            height: 100%;
+        }
+        h5 {
+            text-align: center;
+            font-size: 2vw;
+        }
+        #drag-items img {
+            height: 50px;
+            width: 50px;
+        }
+        #drpdwn-inst-menu {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+        }
+        #dropdownMenuButton {
+            font-size: 1.3vw
+        }
+        #savePDF {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.3vw        }
+        #saveInputList {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.3vw;
+        }
+        #clear {
+            position: absolute;
+            top: 5px;
+            right: 120px;
+        }
+        #rowInfo {
+            padding-bottom: 10px;
+        }
+        #row1 {
+            padding-bottom: 10px;
+        }
+        #row2 {
+            padding-bottom: 10px;
+        }
+        #row3 {
+            padding-bottom: 10px;
+        }
+        #row4 {
+            padding-bottom: 10px;
+        }
+        .form-header {
+            text-align: left;
+        }
+        /* form {
+            width: 750px;
+            height: 450px;
+            margin: auto;
+            position: relative;
+        } */
+        body {
+            overflow:auto;
+        }
+        #inputs {
+            padding-bottom: 5%;
+        }
+        .col-l {
+            width: 25%;
+        }
+        .col-ml {
+            width: 25%;
+        }
+        .col-mr {
+            width: 25%;
+        }
+        .col-r {
+            width: 25%;
+        }
+        .col-band {
+            width: 33%;
+        }
+        .col-venue {
+            width: 33%;
+        }
+        .col-date {
+            width: 33%;
+        }
+        @media screen and (max-width: 800px) {
+          h5 {
+            font-size: 2vw
+        }
+        }
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+          .col-l, .col-ml, .col-mr, .col-r, .col-band, .col-venue, .col-date, #inputs, input[type=submit] {
+            width: 100%;
+            margin-top: 0;
+            padding-bottom: 1%
+          }
+        }
+    </style> -->
+</head>
+
+<body>
+    <div >
+        <div class="header" id="stage-parent">
+            <h5>Drag and drop your gear onto the stage</h5>
+            <h6>Double-click on an icon to resize or remove.</h6>
+            <h6>Click anywhere on the screen to set the location and position of the icon.</h6>
+            <!-- <div id="drag-items">
+                <img src="/assets/guitar-icon-png-65.png" draggable="true" />
+                <img src="/assets/guitar-bass-icon.png" draggable="true" />
+                <img src="/assets/keyboard-icon.png" draggable="true" />
+                <img src="assets/drum-icon.png" draggable="true" />
+            </div> -->
+            <div class="btn-group" id="drpdwn-inst-menu">
+                <button type="button" class="btn-sm btn-secondary dropdown-toggle" data-toggle="dropdown"  id="dropdownMenuButton" aria-haspopup="true"
+                    aria-expanded="false">
+                    Gear
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="col-12" id="drag-items">
+                        <img id="1-15th-bass-amp" src="Icons/1_fifteenth_bass_amp_final.png" draggable="true" />
+                        <img id="acoustic-gtr" src="Icons/acoustic_guitar_final.png" draggable="true" />
+                        <img id="bass-gtr" src="Icons/bass_guitar_final.png" draggable="true" />
+                        <img id="big-swig" src="Icons/big_swig_can_final.png" draggable="true" />
+                        <img id="bongos" src="Icons/bongo_drums_final.png" draggable="true" />
+                        <img id="boom" src="Icons/boom_mic_stand.png" draggable="true" />
+                        <img id="cajon" src="Icons/cajon_final.png" draggable="true" />
+                        <img id="di-box" src="Icons/di_box_final.png" draggable="true" />
+                        <img id="dbl-bass" src="Icons/double_bass_final.png" draggable="true" />
+                        <img id="drums" src="Icons/drum_set_final.png" draggable="true" />
+                        <img id="dual-di" src="Icons/dual_di_box_final.png" draggable="true" />
+                        <img id="electric-gtr" src="Icons/electric_guitar_final.png" draggable="true" />
+                        <img id="she" src="Icons/female_character_final.png" draggable="true" />
+                        <img id="bourbon" src="Icons/fistful_of_bourbon_bottle_final.png" draggable="true" />
+                        <img id="flute" src="Icons/flute_final.png" draggable="true" />
+                        <img id="gtr-amp" src="Icons/guitar_amp_final.png" draggable="true" />
+                        <img id="harmonica" src="Icons/harmonica_final.png" draggable="true" />
+                        <img id="keys" src="Icons/keyboard_final.png" draggable="true" />
+                        <img id="keytar" src="Icons/keytar_final.png" draggable="true" />
+                        <img id="laptop-stand" src="Icons/laptop_stand_final.png" draggable="true" />
+                        <img id="large-bass-amp" src="Icons/large_bass_amp_final.png" draggable="true" />
+                        <img id="he" src="Icons/male_character_final.png" draggable="true" />
+                        <img id="mon" src="Icons/monitor_wedge_final.png" draggable="true" />
+                        <img id="pedal" src="Icons/music_pedal_final.png" draggable="true" />
+                        <img id="they" src="Icons/non_binary_character_final.png" draggable="true" />
+                        <img id="pwr-cable" src="Icons/power_cable_final.png" draggable="true" />
+                        <img id="pwr-cord" src="Icons/power_cord_final.png" draggable="true" />
+                        <img id="stool" src="Icons/stool_final.png" draggable="true" />
+                        <img id="tambourine" src="Icons/tamborine_final.png" draggable="true" />
+                    </div>
+                </div>
+            </div>
+            <div id="container"></div>
+            <button id="clear" type="button" class="btn-sm btn-secondary">Remove</button>
+        </div>
+    </div>
+    <script src="drag-drop.js"></script>
+    <!-- <script>
+        var sceneWidth = 1050;
+        var sceneHeight = 400;
+
+        var stage = new Konva.Stage({
+            container: 'container',
+            width: sceneWidth,
+            height: sceneHeight,
+        });
+        var layer = new Konva.Layer();
+
+        stage.add(layer);
+
+        var imageObj = new Image();
+
+        imageObj.onload = function () {
+            var vanStage = new Konva.Image({
+                x: 250,
+                y: 25,
+                image: imageObj,
+                width: 550,
+                height: 292,
+            });
+
+            // add the background image to the layer
+            layer.add(vanStage);
+        };
+        imageObj.src = '/assets/vancertsdigital1.jpg';
+
+        // what is url of dragging element?
+        var itemURL = '';
+        document
+            .getElementById('drag-items')
+            .addEventListener('dragstart', function (e) {
+                itemURL = e.target.src;
+            });
+
+        // create transformer
+        var tr = new Konva.Transformer();
+
+        // create stage
+        var con = stage.container();
+
+        // initiate drag
+        con.addEventListener('dragover', function (e) {
+            e.preventDefault(); // !important
+        });
+
+        // add drop 
+        con.addEventListener('drop', function (e) {
+            e.preventDefault();
+            // now we need to find pointer position
+            // we can't use stage.getPointerPosition() here, because that event
+            // is not registered by Konva.Stage
+            // we can register it manually:
+            stage.setPointersPositions(e);
+
+            Konva.Image.fromURL(itemURL, function (image) {
+                layer.add(image);
+
+                image.position(stage.getPointerPosition());
+                image.draggable(true);
+
+                // get image size
+                var size = image.size();
+                var width = size.width;
+                var height = size.height;
+
+                // set size
+                image.size({
+                    width: 150,
+                    height: 150
+                });
+
+                image.addEventListener('mouseover', function (e) {
+                    // add transformer to layer
+                    layer.add(tr);
+
+                    // get transformer nodes
+                    const nodes = tr.nodes();
+
+                    // set transformer nodes
+                    tr.nodes([image]);
+
+                    // get transformer rotate
+                    var rotateEnabled = tr.rotateEnabled();
+
+                    // set transformer rotate
+                    tr.rotateEnabled(true);
+                });
+
+                // remove transformer nodes 
+                stage.on('click', function (e) {
+                    tr.nodes([]);
+                });
+            });
+        });
+
+        document.getElementById('savePDF').addEventListener('click', function () {
+            // Code form KonvaJS wiki
+            var plot = new jsPDF('l', 'px', [stage.width()*1.3, stage.height()*1.4]);
+            plot.setTextColor('#000000');
+            // first add texts
+            stage.find('Text').forEach((text) => {
+                const size = text.fontSize() / 0.75; // convert pixels to points
+                plot.setFontSize(size);
+                plot.text(text.text(), text.x(), text.y(), {
+                    baseline: 'top',
+                    angle: -text.getAbsoluteRotation(),
+                });
+            });
+
+            // then put image on top of texts (so texts are not visible)
+            plot.addImage(
+                stage.toDataURL({ pixelRatio: 2 }),
+                // 0, 0, 600, 350
+                0,
+                0,
+                stage.width(),
+                stage.height(),
+            );
+
+            plot.save('stage-plot.pdf');
+        });
+
+        // document.getElementById('clear').addEventListener('click', function () {
+        //     alert('clear')
+            
+        // });
+
+        function fitStageIntoParentContainer() {
+            var container = document.querySelector('#stage-parent');
+
+            // now we need to fit stage into parent container
+            var containerWidth = container.offsetWidth;
+
+            // but we also make the full scene visible
+            // so we need to scale all objects on canvas
+            var scale = containerWidth / sceneWidth;
+
+            stage.width(sceneWidth * scale);
+            stage.height(sceneHeight * scale);
+            stage.scale({ x: scale, y: scale });
+        }
+
+      fitStageIntoParentContainer();
+      // adapt the stage on any window resize
+      window.addEventListener('resize', fitStageIntoParentContainer);
+
+    </script> -->
+    <div class="container">
+        <div class="card text-center">
+            <div class="card-header form-header">
+                Input List
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-row" id="rowInfo">
+                        <div class="col-band">
+                            <input type="text" class="form-control" class="input" placeholder="Band Name" name="bandname" id="bandname">
+                        </div>
+                        <div class="col-venue">
+                            <input type="text" class="form-control" class="input" placeholder="Venue" name="venue" id="venue">
+                        </div>
+                        <div class="col-date">
+                            <input type="text" class="form-control" class="input" placeholder="Show Date" name="showdate" id="showdate">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-l">
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 1" name="input-1" id="input1">
+                            </div>
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 2" name="input-2" id="input2">
+                            </div>
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 3" name="input-3" id="input3">
+                            </div>
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 4" name="input-4" id="input4">
+                            </div>
+                        </div>
+                        <div class="col-ml">
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 5" name="input-5" id="input5">
+                            </div>
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 6" name="input-6" id="input6">
+                            </div>
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 7" name="input-7" id="input7">
+                            </div>
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 8" name="input-8" id="input8">
+                            </div>
+                        </div>
+                        <div class="col-mr">
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 9" name="input-9" id="input9">
+ 
+                            </div>                           
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 10" name="input-10" id="input10">                                
+                            </div>
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 11" name="input-11" id="input11">
+                            </div>
+                            <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 12" name="input-12" id="input12">
+                            </div>
+                        </div>
+                        <div class="col-r">
+                           <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 13" name="input-13" id="input13">
+                           </div>
+                           <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 14" name="input-14" id="input14">
+                           </div>
+                           <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 15" name="input-15" id="input15">
+                           </div>
+                           <div id="inputs">
+                                <input type="text" class="form-control input" placeholder="Input 16" name="input-16" id="input16">
+                           </div>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group form-header">
+                        <label for="AdditionalNotes">Additional Notes</label>
+                        <textarea class="form-control" id="notes" rows="3"></textarea>
+                    </div> -->
+                    <button id="saveInputList" type="button" class="btn btn-secondary save-sub-btn">Save/Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="save-input.js"></script>
+    <!-- <script>
+        document.getElementById('saveInputList').addEventListener('click', function () {
+            // var pdf = new jsPDF('p', 'pt', 'letter');
+            // pdf.addHTML($('#card-body')[0], function () {
+            //     pdf.save('Test.pdf');
+            // });
+
+                // Code form KonvaJS wiki
+                var list = new jsPDF();
+                var img = new Image();
+                var myForm = 
+
+                img.src = 'assets/generic-input_list1024_1.jpg'
+                list.addImage(img, 'JPEG', 0, 0, 209.55, 270.933333333)
+
+                var band = $('#bandname').val();
+                var venue = $('#venue').val();
+                var date = $('#showdate').val();
+                var input1 = $('#input1').val();
+                var input2 = $('#input2').val();
+                var input3 = $('#input3').val();
+                var input4 = $('#input4').val();
+                var input5 = $('#input5').val();
+                var input6 = $('#input6').val();
+                var input7 = $('#input7').val();
+                var input8 = $('#input8').val();
+                var input9 = $('#input9').val();
+                var input10 = $('#input10').val();
+                var input11 = $('#input11').val();
+                var input12 = $('#input12').val();
+                var input13 = $('#input13').val();
+                var input14 = $('#input14').val();
+                var input15 = $('#input15').val();
+                var input16 = $('#input16').val();
+                var notes = $('#notes').val();
+                var notes = function (text, pdf, x, y, start, space, linePadding) {
+                    try {
+                        var end = space;
+                        while (text.length > end) {
+                            tail = text.lastIndexOf(' ', end);
+                            if (tail > -1) {
+                                end = (tail + 1);
+                            }
+                            t = text.substring(start, end);
+                            pdf.text(t, x, y += linePadding);
+                            start = end;
+                            end = start + space;
+                        }
+                        if (text.length <= end && text.lastIndexOf(' ') > 0) {
+                            t = text.substring(start);
+                            pdf.text(t, x, y += linePadding);
+                        }
+
+                        return y;
+                    } catch (err) {
+                        alert(err);
+                    }
+                }
+
+                list.text(35, 27, band);
+                list.text(35, 36.5, venue);
+                list.text(35, 46, date);
+                list.text(35, 55, input1);
+                list.text(35, 65, input2);
+                list.text(35, 74, input3);
+                list.text(35, 84, input4);
+                list.text(35, 93, input5);
+                list.text(35, 102.5, input6);
+                list.text(35, 112, input7);
+                list.text(35, 121.5, input8);
+                list.text(35, 131, input9);
+                list.text(35, 140.5, input10);
+                list.text(35, 150, input11);
+                list.text(35, 159.5, input12);
+                list.text(35, 168.5, input13);
+                list.text(35, 177.5, input14);
+                list.text(35, 187, input15);
+                list.text(35, 196.5, input16);
+                list.text(35, 206, notes);
+
+                list.save('input-list.pdf')
+
+            });
+    </script> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/8.7.0/firebase-app.js"></script>
+    
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="/__/firebase/8.7.0/firebase-analytics.js"></script>
+    
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
+</body>
+
+</html>

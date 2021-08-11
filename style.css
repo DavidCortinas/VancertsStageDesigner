@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+#stage-parent {
+    width: 100%;
+    height: 100%;
+}
+
+h5 {
+    text-align: center;
+    font-size: 2vw;
+}
+h6 {
+    text-align: center;
+    font-size: 1.5vw;
+}
+#drag-items img {
+    height: 50px;
+    width: 50px;
+}
+#drpdwn-inst-menu {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+#dropdownMenuButton {
+    font-size: 1.3vw
+}
+#clear {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 1.3vw        
+}
+#saveInputList {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 1.3vw;
+}
+#rowInfo {
+    padding-bottom: 10px;
+}
+#row1 {
+    padding-bottom: 10px;
+}
+#row2 {
+    padding-bottom: 10px;
+}
+#row3 {
+    padding-bottom: 10px;
+}
+#row4 {
+    padding-bottom: 10px;
+}
+.form-header {
+    text-align: left;
+}
+/* form {
+    width: 750px;
+    height: 450px;
+    margin: auto;
+    position: relative;
+} */
+body {
+    overflow:auto;
+}
+#inputs {
+    padding-bottom: 5%;
+}
+.col-l {
+    width: 25%;
+}
+.col-ml {
+    width: 25%;
+}
+.col-mr {
+    width: 25%;
+}
+.col-r {
+    width: 25%;
+}
+.col-band {
+    width: 33%;
+}
+.col-venue {
+    width: 33%;
+}
+.col-date {
+    width: 33%;
+}
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .col-l, .col-ml, .col-mr, .col-r, .col-band, .col-venue, .col-date, #inputs, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+    padding-bottom: 1%
+    }
+}
